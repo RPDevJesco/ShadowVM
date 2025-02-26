@@ -1,122 +1,129 @@
-# ShadowVM
+# ShadowVM: Advanced Windows Security Isolation System
 
-ShadowVM is a lightweight user-space process VM that executes untrusted scripts and executables with process-level isolation. Unlike traditional VMs or containers, it runs at the process level, providing quick isolation without full OS overhead.
+## Overview
 
-## Features
+ShadowVM is a sophisticated security isolation and monitoring system designed for Windows environments, providing advanced protection mechanisms for executing potentially untrusted code or applications. The project implements multiple layers of security to create a robust, comprehensive containment and monitoring solution.
 
-### Process-Level Isolation
-- Uses process memory isolation instead of container/VM boundaries
-- Leverages OS-provided process isolation mechanisms
-- Creates a sandboxed environment within the process address space
+## Key Components
 
-### Resource Monitoring
-- Tracks process memory usage (private and working set)
-- Monitors file I/O operations
-- Records process creation time and execution metrics
-- Real-time activity monitoring with periodic updates
+### 1. Security System Architecture
 
-### File Access Control
-- Path-based permissions using whitelist approach
-- Extension-based filtering
-- Special handling for Python runtime files
-- Prevention of access to system directories
+The system is built around three primary components:
 
-### Multi-Format Support
-- Executes Python scripts (with interpreter detection)
-- Runs Windows executables directly
-- Handles command-line arguments
+- **Resource Monitor**: Tracks and logs system resource access
+- **Jail Layer**: Provides process and resource containment
+- **ShadowVM**: Implements low-level code and syscall monitoring
 
-## Building
+### 2. Resource Monitoring
 
-Requirements:
-- CMake 3.30 or higher
-- C99 compatible compiler
+The Resource Monitor offers extensive tracking of system resources, including:
+- File System Access
+- Network Operations
+- Memory Usage
+- Registry Interactions
+- Process Creation
+- DLL Loading
+
+#### Key Features:
+- Configurable resource tracking
+- Suspicious activity detection
+- Detailed logging
+- Performance metrics collection
+
+### 3. Jail Layer
+
+The Jail Layer creates an isolated environment for process execution with:
+- Filesystem sandboxing
+- Network access control
+- Resource limit enforcement
+- Process isolation using Windows Job Objects
+
+### 4. ShadowVM Virtualization
+
+ShadowVM provides a sophisticated code execution environment with:
+- Memory sandbox allocation
+- Code pattern matching
+- Syscall interception
+- Execution monitoring
+- Suspicious code detection
+
+## Technical Implementation
+
+### Hooking Mechanism
+
+The system uses a custom hook implementation that:
+- Intercepts system API calls
+- Logs resource access
+- Enables fine-grained monitoring
+- Supports dynamic hook installation/removal
+
+### Security Layers
+
+Combines multiple security techniques:
+1. **Resource Monitoring**: Tracks and logs all system interactions
+2. **Process Isolation**: Restricts process capabilities
+3. **Code Execution Monitoring**: Detects and prevents suspicious code patterns
+
+## Use Cases
+
+- Malware analysis
+- Untrusted code execution
+- Sandboxed application testing
+- Security research
+- Controlled environment deployment
+
+## Security Principles
+
+- Least Privilege
+- Complete Monitoring
+- Proactive Threat Detection
+- Granular Access Control
+
+## Build Requirements
+
 - Windows SDK
+- C99 Compiler (MSVC recommended)
+- CMake 3.30+
 
-Build commands:
+## Compilation
+
 ```bash
 mkdir build
 cd build
 cmake ..
-cmake --build .
+make
 ```
 
-## Usage
+## Usage Example
 
-### Basic Usage
-```bash
-shadowvm.exe <executable_or_script> [args...]
+```c
+// Initialize security system
+SecuritySystem* system = security_init("security.log");
+
+// Add security layers
+add_jail_layer(system, "test_jail", "C:\\sandbox\\");
+add_shadowvm_layer(system, 1024 * 1024);  // 1MB sandbox
+
+// Execute command in secure environment
+security_execute(system, "potentially_risky_program.exe");
+
+// Cleanup
+security_cleanup(system);
 ```
 
-### Examples
-Running a Python script:
-```bash
-shadowvm.exe script.py arg1 arg2
-```
+## Limitations
 
-Running an executable:
-```bash
-shadowvm.exe program.exe --param value
-```
+- Windows-specific implementation
+- Performance overhead due to extensive monitoring
+- Requires administrative privileges for full functionality
 
-## Current Limitations
+## Disclaimer
 
-1. Security Scope
-   - Basic process isolation only
-   - Limited syscall interception
-   - No privilege de-escalation
-   - No network traffic controls
-
-2. Execution Control
-   - Cannot prevent all forms of inter-process communication
-   - No DLL injection protection
-   - Limited control over child processes
-
-3. Resource Control
-   - Basic memory and file I/O monitoring
-   - No fine-grained resource limits
-   - No network activity monitoring
-
-## Use Cases
-
-Current implementation is suitable for:
-1. Development and testing environments
-2. Process activity monitoring
-3. Basic isolation of untrusted scripts
-4. Resource usage analysis
-5. Understanding process behavior
-
-## Example Output
-
-Running an application shows process isolation metrics:
-```
-=== Process Isolation Metrics ===
-Private Memory Usage: 8278016 bytes
-Working Set Size: 86982656 bytes
-Process Start Time: 16:28:24.412
-
-=== Process Activity Update ===
-File I/O:
-  Reads:  127 operations, 524288 bytes
-  Writes: 45 operations, 131072 bytes
-```
+This is a research-grade security isolation system. While robust, it should not be considered a complete security solution without additional hardening.
 
 ## Future Improvements
 
-Planned enhancements:
-1. Enhanced security features
-   - Proper token restrictions
-   - Job object constraints
-   - Enhanced syscall filtering
-2. Resource controls
-   - Network activity monitoring
-   - Memory limits enforcement
-   - CPU usage restrictions
-3. Better isolation
-   - Registry virtualization
-   - File system virtualization
-   - GUI isolation
-
-## License
-
-[Insert your chosen license here]
+- Cross-platform support
+- More sophisticated pattern matching
+- Enhanced machine learning-based threat detection
+- Expanded resource tracking
