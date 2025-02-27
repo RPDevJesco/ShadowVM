@@ -14,6 +14,7 @@ set(SOURCE_FILES
         security_system.c
         resource_hooks.c
         resource_monitor.c
+        container.c
         main.c
 )
 
@@ -27,6 +28,7 @@ set(HEADER_FILES
         include/jail_layer.h
         include/security_system.h
         include/shadow_vm.h
+        include/container.h
 )
 
 # Add include directory

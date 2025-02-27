@@ -127,7 +127,3 @@ This is a research-grade security isolation system. While robust, it should not 
 - More sophisticated pattern matching
 - Enhanced machine learning-based threat detection
 - Expanded resource tracking
-<img width="865" alt="Shadowvm1" src="https://github.com/user-attachments/assets/617fbec0-dd6b-4600-99a8-e507842529b4" />
-
-<img width="865" alt="Shadowvm2" src="https://github.com/user-attachments/assets/379fd381-06f2-4024-ae26-56b546884654" />
-
