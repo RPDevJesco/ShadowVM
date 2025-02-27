@@ -127,3 +127,7 @@ This is a research-grade security isolation system. While robust, it should not 
 - More sophisticated pattern matching
 - Enhanced machine learning-based threat detection
 - Expanded resource tracking
+
+
+Applications now run within a unified container with ShadowVM.
+![image](https://github.com/user-attachments/assets/75a036f2-d75d-4f2a-8041-bee0311c03d9)
